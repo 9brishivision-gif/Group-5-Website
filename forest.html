@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Wizard | Group 5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glow: #00ff88;
+            --deep-forest: #051a0d;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            background: var(--deep-forest);
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #e0fff0;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(0, 255, 136, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(0, 150, 255, 0.12) 0%, transparent 45%);
+            z-index: -1;
+            animation: drift 12s infinite alternate ease-in-out;
+        }
+
+        @keyframes drift {
+            from { transform: scale(1); }
+            to { transform: scale(1.15) rotate(1deg); }
+        }
+
+        .container {
+            position: relative;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 50px;
+            width: 90%;
+            max-width: 440px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 25px rgba(255,255,255,0.05);
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.6rem;
+            margin-bottom: 5px;
+            background: linear-gradient(to bottom, #fff 30%, var(--glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 25px rgba(0, 255, 136, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: rgba(0, 255, 136, 0.7);
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            text-align: center;
+        }
+
+        input:focus {
+            border-color: var(--glow);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+            transform: scale(1.02);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 16px;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            color: #051a0d;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 12px 24px rgba(0, 255, 136, 0.25);
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 35px rgba(0, 255, 136, 0.45);
+            filter: brightness(1.15);
+        }
+
+        #display-area {
+            margin-top: 35px;
+            min-height: 180px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 22px;
+            margin-bottom: 15px;
+            animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popUp {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--glow);
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .footer-text {
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.35);
+            border-top: 1px solid var(--border);
+            padding-top: 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .error { color: #ff8585; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <h1>FRUIT WIZARD</h1>
+        <p class="subtitle">Magical Botany</p>
+
+        <input type="text" id="fruitInput" placeholder="Spell out a fruit..." onkeydown="if(event.key==='Enter') castSpell()">
+        
+        <button onclick="castSpell()">REVEAL SECRETS</button>
+
+        <div id="display-area">
+            <p style="color: rgba(255,255,255,0.25); font-style: italic;">Gaze into the grove to begin...</p>
+        </div>
+
+        <div class="footer-text">
+            Created and displayed by: Group 5
+        </div>
+    </div>
+
+    <script>
+        const database = {
+            "apple": { ph: "6.0–7.0", hum: "60–75%", temp: "18–24°C" },
+            "banana": { ph: "5.5–7.0", hum: "75–85%", temp: "26–30°C" },
+            "mango": { ph: "5.5–7.5", hum: "50–70%", temp: "24–30°C" },
+            "orange": { ph: "6.0–7.5", hum: "50–70%", temp: "21–29°C" },
+            "lemon": { ph: "5.5–6.5", hum: "50–70%", temp: "20–30°C" },
+            "pineapple": { ph: "4.5–6.5", hum: "70–85%", temp: "22–32°C" },
+            "papaya": { ph: "5.5–7.0", hum: "60–85%", temp: "22–30°C" },
+            "guava": { ph: "5.0–7.0", hum: "50–70%", temp: "23–28°C" },
+            "grapes": { ph: "5.5–7.0", hum: "40–60%", temp: "15–30°C" },
+            "strawberry": { ph: "5.5–6.5", hum: "60–80%", temp: "15–26°C" },
+            "watermelon": { ph: "6.0–7.0", hum: "50–70%", temp: "24–30°C" },
+            "muskmelon": { ph: "6.0–6.8", hum: "50–70%", temp: "24–32°C" },
+            "pomegranate": { ph: "5.5–7.2", hum: "40–60%", temp: "25–35°C" },
+            "lychee": { ph: "5.0–6.5", hum: "70–90%", temp: "20–32°C" },
+            "sapota": { ph: "6.0–8.0", hum: "60–80%", temp: "25–35°C" },
+            "chikoo": { ph: "6.0–8.0", hum: "60–80%", temp: "25–35°C" },
+            "coconut": { ph: "5.0–8.0", hum: "70–90%", temp: "27–32°C" },
+            "avocado": { ph: "5.0–7.0", hum: "60–80%", temp: "16–29°C" },
+            "kiwi": { ph: "5.5–6.5", hum: "60–80%", temp: "14–24°C" },
+            "peach": { ph: "6.0–7.0", hum: "50–65%", temp: "18–26°C" },
+            "pear": { ph: "6.0–7.0", hum: "60–75%", temp: "18–24°C" },
+            "plum": { ph: "5.5–6.5", hum: "50–70%", temp: "18–30°C" },
+            "cherry": { ph: "6.0–7.0", hum: "50–70%", temp: "15–24°C" },
+            "fig": { ph: "6.0–7.8", hum: "40–60%", temp: "20–30°C" },
+            "dragon fruit": { ph: "5.5–7.0", hum: "60–80%", temp: "20–35°C" },
+            "passion fruit": { ph: "5.5–6.5", hum: "60–80%", temp: "20–30°C" },
+            "custard apple": { ph: "6.0–7.5", hum: "50–70%", temp: "25–35°C" },
+            "jamun": { ph: "6.5–7.5", hum: "60–80%", temp: "25–35°C" },
+            "amla": { ph: "6.0–8.0", hum: "40–60%", temp: "20–30°C" },
+            "raspberry": { ph: "5.5–6.5", hum: "60–70%", temp: "18–26°C" },
+            "blueberry": { ph: "4.5–5.5", hum: "60–80%", temp: "18–26°C" }
+        };
+
+        function castSpell() {
+            const input = document.getElementById('fruitInput').value.toLowerCase().trim();
+            const area = document.getElementById('display-area');
+            
+            if (database[input]) {
+                const f = database[input];
+                area.innerHTML = `
+                    <div style="font-weight:800; color:#fff; margin-bottom:15px; font-size:1.4rem; text-shadow: 0 0 15px var(--glow);">${input.toUpperCase()}</div>
+                    <div class="card">
+                        <span class="stat-label">Optimal Temperature</span>
+                        <span class="stat-value">${f.temp}</span>
+                    </div>
+                    <div class="card">
+                        <span class="stat-label">Preferred Humidity</span>
+                        <span class="stat-value">${f.hum}</span>
+                    </div>
+                    <div class="card">
+                        <span class="stat-label">Ideal Soil pH</span>
+                        <span class="stat-value">${f.ph}</span>
+                    </div>
+                `;
+            } else {
+                area.innerHTML = `<p class="error">"Alas! The Wizard's scroll lacks knowledge of ${input}."</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
